@@ -23,7 +23,7 @@ void printArr(vector<lld> arr)
     for(lld i = low, j = mid + 1,k = low; k<=hi ; ++k)
     {
         // if low is exhausted
-        /*
+       
         if(i > mid)
         {
             arr[k] = dup[j++];
@@ -42,7 +42,7 @@ void printArr(vector<lld> arr)
         {
             arr[k] = dup[i++];
         }
-        */
+        
     }
 }
 
