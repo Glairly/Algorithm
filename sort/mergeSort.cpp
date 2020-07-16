@@ -1,9 +1,7 @@
-#define lld long long int
-#define oper less
-#include <bits/stdc++.h>
+#include "../libraries/mixin.h"
 #include <time.h>
+#define oper less
 
-using namespace std;
 
 
 void printArr(vector<lld> arr)
@@ -16,14 +14,14 @@ void printArr(vector<lld> arr)
 }
 
 
- void _merge(vector<lld> &arr,lld low,lld mid,lld hi)
+void _merge(vector<lld> &arr,lld low,lld mid,lld hi)
 {
     vector <lld> dup  = arr;
 
     for(lld i = low, j = mid + 1,k = low; k<=hi ; ++k)
     {
         // if low is exhausted
-       
+
         if(i > mid)
         {
             arr[k] = dup[j++];
@@ -34,7 +32,7 @@ void printArr(vector<lld> arr)
             arr[k] = dup[i++];
         }
         // compare
-        else if(oper(dup[j],dup[i]))
+        else if(dup[j]<dup[i])
         {
             arr[k] = dup[j++];
         }
@@ -42,7 +40,7 @@ void printArr(vector<lld> arr)
         {
             arr[k] = dup[i++];
         }
-        
+
     }
 }
 

@@ -1,14 +1,4 @@
-#define lld long long int
-#define oper less
-#include <bits/stdc++.h>
-using namespace std;
-
-void printArr(vector<lld> &arr)
-{
-    for(auto &i : arr)
-        printf("%3lld",i);
-}
-
+#include "../libraries/mixin.h"
 
 void _sort(vector<lld> &arr,lld low,lld hi)
 {

@@ -1,15 +1,4 @@
-#include <bits/stdc++.h>
-#define lld long long int
-using namespace std;
-
-void printArr(vector<lld> &arr)
-{
-    for(auto &i : arr)
-    {
-        cout<<i<<" ";
-    }
-}
-
+#include "../libraries/mixin.h"
 
 void _init(vector<lld> &arr,lld size)
 {
