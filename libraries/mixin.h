@@ -5,6 +5,8 @@
 
 using namespace std;
 
+
+
 template <class T> void printArr(vector<T> &arr,string split = " ")
 {
     for(auto &i : arr)

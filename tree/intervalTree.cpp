@@ -5,12 +5,12 @@
 #define CHILD false
 #define RIGHT 1
 #define LEFT  2
-// implementation of Red-black tree is to simply the implementation of 2-3 tree  (╯°□°）╯︵ ┻━┻
 
 
 struct Node
 {
-    lld val = -1;
+    lld low = -1,hi = -1;
+    lld endPoint = -1;
     Node *left = nullptr,*right = nullptr;
     bool color = BLACK;
 } typedef n;
@@ -18,7 +18,8 @@ struct Node
 
 void _copy(n &node,n &blueprint)
 {
-    node.val = blueprint.val;
+    node.low = blueprint.low;
+    node.hi = blueprint.hi;
     node.left = blueprint.left;
     node.right = blueprint.right;
     node.color = blueprint.color;
@@ -36,10 +37,11 @@ void swapColor(n &node)
     }
 }
 
-n& _init(lld val = -1)
+n& _init(lld low = 0,lld hi = INT_MAX)
 {
     n *node = new n();
-    node->val = val;
+    node->low = low;
+    node->hi = INT_MAX;
     return *node;
 }
 
@@ -86,34 +88,37 @@ bool isRed(n *node)
 }
 
 
-void _insert(n &root,lld val)
+void _insert(n &root,lld low,lld hi)
 {
-    if(&root == nullptr || root.val == val)
+    if(&root == nullptr || (root.low == val && root.hi == hi))
         return;
-    if(root.val == -1) // head
+    if(root.low == -1 || root.hi == -1) // head
     {
-        root.val = val;
+        root.low = low;
+        root.hi = hi;
         return ;
 
     }
-    if(root.val > val)
+    if(root.low > low)
     {
         if(root.left == nullptr)
         {
             n *node = new n();
-            node->val = val;
+            node->low = low;
+            node->hi = hi;
             root.left = node;
             node->color = RED;
         }
         else
             _insert(*root.left,val);
     }
-    if(root.val < val)
+    if(root.low < low)
     {
         if(root.right == nullptr)
         {
             n *node = new n();
-            node->val = val;
+            node->low = low;
+            node->hi = hi;
             root.right = node;
             node->color = RED;
         }
@@ -121,7 +126,7 @@ void _insert(n &root,lld val)
             _insert(*root.right,val);
     }
 
-    if( !isRed(root.left) && isRed(root.right))
+    if(!isRed(root.left) && isRed(root.right))
     {
         root = rotateLeft(root);
     }
@@ -135,66 +140,9 @@ void _insert(n &root,lld val)
     }
 }
 
-pair<n&,bool> _get(n &root,lld val,bool res)
-{
-    if(&root == nullptr || root.val == -1)
-    {
-        n *nu = new n();
-        return  {*nu,false};
-    }
-    if(root.val == val)
-        return {root,false}; // head
-    if(root.val > val)
-    {
-        if(root.left == nullptr)
-        {
-            n *nu = new n();
-            return  {*nu,false};
-        }
-        else if (root.left->val == val)
-        {
-            if(res == HEAD)
-            {
-                return {root,LEFT};
-            }
-            else
-                return {*root.left,LEFT};
-        }
-        else
-            return  _get(*root.left,val,res);
-    }
-    if(root.val < val)
-    {
-        if(root.right == nullptr)
-        {
-            n *nu = new n();
-            return  {*nu,false};
-        }
-        else if (root.right->val == val)
-        {
-
-            if(res == HEAD)
-            {
-                return {root,RIGHT};
-            }
-            else
-                return  {*root.right,RIGHT};
-        }
-        else
-            return  _get(*root.right,val,res);
-    }
-}
-//         o <- h
-// L -> o     o <- R          ->  success(RL) -> h = RL (change child) ->
-//     RL ->o   o <- RR
-
-//                o <- h
-//      L -> o           o <- R          ->  success(RL) -> h = RL (change child) ->
-//        o     o    RL ->o   o <- RR
-
 bool success(n &node)
 {
-    cout<<2;
+
 
     n    *Left = node.left,
           *Right = node.right,
@@ -202,25 +150,29 @@ bool success(n &node)
 
     if(Right == nullptr)
     {
-        cout<<3;
+
         if(Left == nullptr)
             return false;
-        node.val = Left->val; // copy value
+        node.low = Left->low;
+        node.hi = Left->hi;
+
         return success(*Left);
     }
     else
     {
         if(RL == nullptr)
         {
-            cout<<4;
-            node.val = Right->val;
+
+            node.low = Right->low;
+            node.hi = Right->hi;
             node.right = Right->right;
             return true;
         }
         else
         {
-            cout<<5;
-            node.val = RL->val;
+
+            node.low = Right->low;
+            node.hi = Right->hi;
             return success(*RL);
         }
     }
@@ -245,7 +197,7 @@ bool _delete(n &root,lld val)
                 return success(*root.left);
             }
             else
-                return _delete(*root.left,val);
+                return _delete(*root.left,low,hi);
         }
         else
             return false;
@@ -259,7 +211,7 @@ bool _delete(n &root,lld val)
                 return success(*root.right);
             }
             else
-                return _delete(*root.right,val);
+                return _delete(*root.right,low,hi);
         }
         else
             return false;
@@ -288,4 +240,12 @@ int main()
 //    cout<<(_get(root,num,CHILD)).val;
     RESULT
     printTree(root," ",0);
+}
+
+
+
+int main()
+{
+
+
 }
