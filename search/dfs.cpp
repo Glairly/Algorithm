@@ -66,6 +66,7 @@ public :
         auto dir = getDir();
         if(arr[now].visited || flag)
             return ;
+        arr[now].visited = true;
         if(arr[now].val == dir)
         {
             flag = true;
